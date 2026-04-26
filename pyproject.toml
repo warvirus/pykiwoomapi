@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pykiwoomapi"
+version = "0.1.0"
+description = "Python wrapper for Kiwoom Open API+ (Korea Stock Market)"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Jason Lee", email = "warvirus1004@gmail.com"}
+]
+maintainers = [
+    {name = "Jason Lee", email = "warvirus1004@gmail.com"}
+]
+keywords = ["kiwoom", "korean-stock", "stock-api", "Korea-Stock-Market", "Kiwoom-OpenAPI"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.28.0",
+    "websockets>=10.0",
+    "pandas>=1.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/warvirus/pykiwoomapi"
+Documentation = "https://github.com/warvirus/pykiwoomapi#readme"
+Repository = "https://github.com/warvirus/pykiwoomapi"
+Issues = "https://github.com/warvirus/pykiwoomapi/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.package-data]
+pykiwoomapi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.mypy]
+python_version = "3.9"
+src_path = ["src/pykiwoomapi"]
+warn_return_any = true
+ignore_missing_imports = true
