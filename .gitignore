@@ -104,6 +104,7 @@ dmypy.json
 account.txt
 .idea/
 .vscode/
+.github/
 
 *.tmp
 *.temp
