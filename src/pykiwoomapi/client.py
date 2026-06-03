@@ -69,11 +69,11 @@ class KiwoomClient:
         """Handle structured request format."""
         rqname = req.get("rqname")
         if not rqname:
-            logging.error("Missing 'rqname' in request")
+            self._auth.logger.error("Missing 'rqname' in request")
             return {"return_code": -1, "return_msg": "Missing 'rqname'"}
 
         if rqname not in APPID:
-            logging.error("Unknown command: %s", rqname)
+            self._auth.logger.error("Unknown command: %s", rqname)
             return {"return_code": -1, "return_msg": f"Unknown command: {rqname}"}
 
         api_id = APPID[rqname][0]
@@ -108,7 +108,7 @@ class KiwoomClient:
                 data=input_data,
             )
         else:
-            logging.error("Internal function error: fn_name is '%s'", fn_name)
+            self._auth.logger.error("Internal function error: fn_name is '%s'", fn_name)
             return {"return_code": -1, "return_msg": "Internal error"}
 
     def _read_simple(
@@ -120,7 +120,7 @@ class KiwoomClient:
     ) -> Dict[str, Any]:
         """Handle simple command string format."""
         if cmd not in APPID:
-            logging.error("Unknown command: %s", cmd)
+            self._auth.logger.error("Unknown command: %s", cmd)
             return {"return_code": -1, "return_msg": "Unknown command"}
 
         api_id = APPID[cmd][0]
@@ -146,5 +146,5 @@ class KiwoomClient:
                 **kwargs,
             )
         else:
-            logging.error("Internal function error: fn_name is '%s'", fn_name)
+            self._auth.logger.error("Internal function error: fn_name is '%s'", fn_name)
             return {"return_code": -1, "return_msg": "Internal error"}

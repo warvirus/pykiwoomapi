@@ -119,8 +119,8 @@ class Auth(WebIo):
                         result = True
                     else:
                         error_msg = data.get("return_msg", "No token in response")
-                        error_data = {"return_code": -1, "return_msg": error_msg}
-                        results.append(error_data)
+                        # error_data = {"return_code": -1, "return_msg": error_msg}
+                        # results.append(error_data)
                         self._logger.error(f"Login failed: {error_msg}")
                 else:
                     error_data = {"return_code": res.status_code, "return_msg": res.text}
