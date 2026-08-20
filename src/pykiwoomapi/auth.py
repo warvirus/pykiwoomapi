@@ -28,40 +28,47 @@ class Auth(WebIo):
         self._appkey: Optional[str] = appkey
         self._secretkey: Optional[str] = secretkey
         self._token: Optional[str] = None
+        self._expires_dt: Optional[str] = ''
         self._logger: logging.Logger = logger if logger else logging.getLogger(__name__)
 
     @property
     def mock(self) -> bool:
         return self._mock
+    @mock.setter
+    def mock(self, value: bool) -> None:
+        self._mock = value
+    @property
+    def appkey(self) -> str:
+        return self._appkey if self._appkey is not None else ""
+    @appkey.setter
+    def appkey(self, value: str) -> None:
+        self._appkey = value
+    @property
+    def secretkey(self) -> str:
+        return self._secretkey if self._secretkey is not None else ""
+    @secretkey.setter
+    def secretkey(self, value: str) -> None:
+        self._secretkey = value
 
     @property
     def token(self) -> Optional[str]:
         return self._token
-
     @property
     def is_auth(self) -> bool:
         return self._token is not None
-
     @property
     def url(self) -> str:
         return host_url(self._mock)
-
-    @property
-    def appkey(self) -> Optional[str]:
-        return self._appkey
-
-    @property
-    def secretkey(self) -> Optional[str]:
-        return self._secretkey
-
     @property
     def logger(self) -> logging.Logger:
         return self._logger
-
     @logger.setter
     def logger(self, logger: logging.Logger) -> None:
         self._logger = logger
-
+    @property
+    def expires_dt(self) -> Optional[str]:
+        return self._expires_dt
+ 
     def login(
         self,
         appkey: Optional[str] = None,
@@ -116,6 +123,7 @@ class Auth(WebIo):
                         self._token = data["token"]
                         self._appkey = appkey
                         self._secretkey = secretkey
+                        self._expires_dt = data.get("expires_dt", "")
                         result = True
                     else:
                         error_msg = data.get("return_msg", "No token in response")
