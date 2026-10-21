@@ -115,3 +115,7 @@ temp.json
 
 # Kiwoom API specific (add to .env)
 account.txt
+
+checklist.md
+context-notes.md
+memory.md
