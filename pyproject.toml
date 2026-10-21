@@ -151,4 +151,6 @@ skip-magic-trailing-comma = false
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]  # imported but unused
+"src/pykiwoomapi/transactions.py" = ["N802"]  # Element, ElementReal 은 공개 API 이름이라 유지
+"src/pykiwoomapi/realtime.py" = ["C901"]  # receive_messages 복잡도 허용
 "tests/**/*.py" = ["S101"]  # use of assert
