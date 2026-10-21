@@ -10,8 +10,7 @@ pip install pykiwoomapi
 
 For development:
 ```bash
-pip install -e .
-pip install -e ".[dev]"
+uv sync
 ```
 
 ## Quick Start

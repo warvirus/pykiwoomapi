@@ -7,13 +7,13 @@ We welcome contributions! Please follow these guidelines.
 ```bash
 git clone https://github.com/warvirus/pykiwoomapi.git
 cd pykiwoomapi
-pip install -e ".[dev]"
+uv sync
 ```
 
 ## Running Tests
 
 ```bash
-pytest
+uv run pytest
 ```
 
 ## Code Style
@@ -21,7 +21,7 @@ pytest
 We use `ruff` for linting:
 
 ```bash
-ruff check src/pykiwoomapi/
+uv run ruff check src/pykiwoomapi/
 ```
 
 ## Pull Requests
