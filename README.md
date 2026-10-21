@@ -8,10 +8,19 @@ Python wrapper for **Kiwoom Open API+** (Korea Stock Market).
 pip install pykiwoomapi
 ```
 
-For development:
+## Development
+
+This project uses [uv](https://docs.astral.sh/uv/). The pinned Python version is in `.python-version` (3.12), and dependencies are locked in `uv.lock`.
+
 ```bash
-uv sync
+uv sync --managed-python        # create .venv and install runtime + dev dependencies
+uv run pytest                   # run tests
+uv run ruff check src/pykiwoomapi/
+uv run mypy src/pykiwoomapi/
+uv build                        # build sdist and wheel
 ```
+
+Development tools live in `[dependency-groups].dev` in `pyproject.toml`. The package itself supports Python 3.9 and above.
 
 ## Quick Start
 
