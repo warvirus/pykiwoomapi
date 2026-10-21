@@ -1,6 +1,5 @@
 """Tests for the WebSocketClient module."""
 
-import pytest
 from pykiwoomapi import WebSocketClient
 
 

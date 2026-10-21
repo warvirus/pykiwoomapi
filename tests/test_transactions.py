@@ -1,10 +1,7 @@
 """Tests for the transactions module."""
 
-import pytest
 from pykiwoomapi.transactions import (
     APPID,
-    _Elements,
-    _ElementsRealtime,
     Element,
     ElementReal,
 )

@@ -1,7 +1,6 @@
 """Tests for the KiwoomClient module."""
 
-import pytest
-from pykiwoomapi import KiwoomClient, APPID
+from pykiwoomapi import APPID
 
 
 class TestKiwoomClient:

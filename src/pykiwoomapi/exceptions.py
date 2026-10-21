@@ -3,11 +3,13 @@
 
 class PyKiwoomError(Exception):
     """Base exception for pykiwoomapi."""
+
     pass
 
 
 class AuthenticationError(PyKiwoomError):
     """Raised when authentication fails."""
+
     pass
 
 
@@ -22,9 +24,11 @@ class APIRequestError(PyKiwoomError):
 
 class WebSocketError(PyKiwoomError):
     """Raised when a WebSocket connection or communication fails."""
+
     pass
 
 
 class RateLimitError(PyKiwoomError):
     """Raised when the API rate limit is exceeded."""
+
     pass

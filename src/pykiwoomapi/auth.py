@@ -1,9 +1,9 @@
 """Authentication module for PyKiwoom API."""
 
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
-from .common import host_url, WebIo
+from .common import WebIo, host_url
 
 
 class Auth(WebIo):
@@ -14,21 +14,22 @@ class Auth(WebIo):
         appkey: Optional application key from Kiwoom API portal.
         secretkey: Optional secret key from Kiwoom API portal.
         logger: Optional external logger. If None, uses default logging.
+
     """
 
     def __init__(
         self,
         mock: bool = False,
-        appkey: Optional[str] = None,
-        secretkey: Optional[str] = None,
-        logger: Optional[logging.Logger] = None,
+        appkey: str | None = None,
+        secretkey: str | None = None,
+        logger: logging.Logger | None = None,
     ) -> None:
         super().__init__()
         self._mock: bool = mock
-        self._appkey: Optional[str] = appkey
-        self._secretkey: Optional[str] = secretkey
-        self._token: Optional[str] = None
-        self._expires_dt: Optional[str] = ''
+        self._appkey: str | None = appkey
+        self._secretkey: str | None = secretkey
+        self._token: str | None = None
+        self._expires_dt: str | None = ''
         self._logger: logging.Logger = logger if logger else logging.getLogger(__name__)
 
     @property
@@ -51,7 +52,7 @@ class Auth(WebIo):
         self._secretkey = value
 
     @property
-    def token(self) -> Optional[str]:
+    def token(self) -> str | None:
         return self._token
     @property
     def is_auth(self) -> bool:
@@ -66,15 +67,15 @@ class Auth(WebIo):
     def logger(self, logger: logging.Logger) -> None:
         self._logger = logger
     @property
-    def expires_dt(self) -> Optional[str]:
+    def expires_dt(self) -> str | None:
         return self._expires_dt
- 
+
     def login(
         self,
-        appkey: Optional[str] = None,
-        secretkey: Optional[str] = None,
-        mock: Optional[bool] = None,
-        results: Optional[List[Dict[str, Any]]] = None,
+        appkey: str | None = None,
+        secretkey: str | None = None,
+        mock: bool | None = None,
+        results: list[dict[str, Any]] | None = None,
     ) -> bool:
         """Authenticate with Kiwoom API using app key and secret key.
 
@@ -88,6 +89,7 @@ class Auth(WebIo):
 
         Returns:
             True if login successful, False otherwise.
+
         """
         result = False
 

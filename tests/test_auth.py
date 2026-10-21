@@ -1,7 +1,5 @@
 """Tests for the Auth module."""
 
-import pytest
-from pykiwoomapi import Auth
 
 
 class TestAuth:

@@ -1,7 +1,6 @@
 """Main API client for PyKiwoom."""
 
-import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from .auth import Auth
 from .common import api_request
@@ -13,6 +12,7 @@ class KiwoomClient:
 
     Args:
         auth: Auth object with valid token.
+
     """
 
     def __init__(self, auth: Auth) -> None:
@@ -28,11 +28,11 @@ class KiwoomClient:
 
     def read(
         self,
-        cmd: Union[str, Dict[str, Any]],
+        cmd: str | dict[str, Any],
         cont_yn: str = "N",
         next_key: str = "",
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Execute an API command.
 
         Usage patterns:
@@ -59,13 +59,14 @@ class KiwoomClient:
 
         Returns:
             API response dictionary.
+
         """
         if isinstance(cmd, dict):
             return self._read_structured(cmd)
         else:
             return self._read_simple(cmd, cont_yn, next_key, **kwargs)
 
-    def _read_structured(self, req: Dict[str, Any]) -> Dict[str, Any]:
+    def _read_structured(self, req: dict[str, Any]) -> dict[str, Any]:
         """Handle structured request format."""
         rqname = req.get("rqname")
         if not rqname:
@@ -117,7 +118,7 @@ class KiwoomClient:
         cont_yn: str = "N",
         next_key: str = "",
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Handle simple command string format."""
         if cmd not in APPID:
             self._auth.logger.error("Unknown command: %s", cmd)

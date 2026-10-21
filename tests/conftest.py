@@ -1,6 +1,7 @@
 """Pytest fixtures for pykiwoomapi tests."""
 
 import pytest
+
 from pykiwoomapi import Auth, KiwoomClient
 
 

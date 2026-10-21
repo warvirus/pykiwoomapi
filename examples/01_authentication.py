@@ -2,12 +2,15 @@
 
 import logging
 import os
-from pykiwoomapi import Auth, KiwoomClient
+
 from dotenv import load_dotenv
+
+from pykiwoomapi import Auth, KiwoomClient
 
 # 1. .env 파일의 내용을 로드합니다.
 load_dotenv()
 
+MOCK = True if os.getenv("KIWOOM_APP_MOCK", "1").lower() == "1" or os.getenv("KIWOOM_APP_MOCK", "True").lower() == "true" else False
 APP_KEY = os.getenv("KIWOOM_APP_KEY", "your_app_key")
 SECRET_KEY = os.getenv("KIWOOM_SECRET_KEY", "your_secret_key")
 
@@ -29,7 +32,7 @@ def main():
 
     # Usage 1: Create Auth with custom logger
     auth = Auth(
-        mock=False,
+        mock=MOCK,
         appkey=APP_KEY,
         secretkey=SECRET_KEY,
         logger=my_logger

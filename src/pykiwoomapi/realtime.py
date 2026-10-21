@@ -3,9 +3,9 @@
 import asyncio
 import inspect
 import json
-import logging
 import threading
-from typing import Any, Callable, List, Optional
+from collections.abc import Callable
+from typing import Any
 
 import websockets
 
@@ -18,10 +18,12 @@ class WebSocketClient:
     Args:
         auth: Auth object with valid token.
         callback: Callback function to handle received messages.
+
     """
+
     RECV_TIMEOUT = 3.0  # seconds
 
-    def __init__(self, auth: Auth, callback: Optional[Callable] = None) -> None:
+    def __init__(self, auth: Auth, callback: Callable | None = None) -> None:
         self._auth = auth
         self.logger = auth.logger
         self.uri = (
@@ -29,12 +31,12 @@ class WebSocketClient:
             if self._auth.mock
             else "wss://api.kiwoom.com:10000/api/dostk/websocket"
         )
-        self.websocket: Optional[Any] = None
+        self.websocket: Any | None = None
         self.connected = False
         self.is_login = False
         self.keep_running = True
-        self.message_handlers: List[Callable] = []
-        self._thread_loop: Optional[asyncio.AbstractEventLoop] = None
+        self.message_handlers: list[Callable] = []
+        self._thread_loop: asyncio.AbstractEventLoop | None = None
         if callback:
             self.message_handlers.append(callback)
 
@@ -90,7 +92,7 @@ class WebSocketClient:
         message = {
             'trnm': 'DISCONNECTED',
             'return_code': return_code,
-            'return_msg': return_msg,   
+            'return_msg': return_msg,
         }
         for handler in self.message_handlers:
             if inspect.iscoroutinefunction(handler):
@@ -113,7 +115,7 @@ class WebSocketClient:
                 if not self.connected or self.websocket is None:
                     if not self.keep_running:   # 추가
                         break
-                    
+
                     self.logger.debug("[Realtime] Reconnecting in 3 seconds...")
                     await asyncio.sleep(3)
                     await self.connect()
@@ -127,7 +129,7 @@ class WebSocketClient:
                         return_code = response.get("return_code", -1)
                         if return_code != 0:
                             self.logger.error(
-                                f"[Realtime] Login failed: return_code : {return_code}, {response.get('return_msg', '')}", 
+                                f"[Realtime] Login failed: return_code : {return_code}, {response.get('return_msg', '')}",
                             )
                             await self.disconnect()
                         else:
@@ -142,12 +144,12 @@ class WebSocketClient:
                             json.dumps(response, indent=4, ensure_ascii=False),
                         )
                         await self.recv_message(response)  # 일반 메시지도 핸들러로 전달
-            # self.websocket.recv()에서 발생할 수 있는 다양한 예외 처리 
+            # self.websocket.recv()에서 발생할 수 있는 다양한 예외 처리
             except AttributeError as e:
                 self.logger.error("[Realtime] Attribute error: %s", e)
                 continue
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 # 주기적으로 연결 상태를 확인하기 위해 타임아웃 설정
                 continue
 
@@ -175,7 +177,7 @@ class WebSocketClient:
                 else:
                     self.logger.error(f"[Realtime] Receive error: : {err_str} : '{response_str}'", )
 
-        # while 루프 종료 후 연결이 남아있다면 정리        
+        # while 루프 종료 후 연결이 남아있다면 정리
         if self.websocket:
             try:
                 await self.websocket.close()
@@ -206,9 +208,9 @@ class WebSocketClient:
         else:
             self.logger.warning("[Realtime] Handler must be an async function.")
 
-    def start_thread(self, callback: Optional[Callable] = None) -> None:
+    def start_thread(self, callback: Callable | None = None) -> None:
         self.keep_running = True
-        
+
         self._thread = threading.Thread(
             target=self.run_worker_in_thread, args=(callback,), daemon=True
         )
@@ -236,7 +238,7 @@ class WebSocketClient:
 
         self.logger.debug("[Realtime] Thread closed.")
 
-    def run_worker_in_thread(self, callback: Optional[Callable] = None) -> None:
+    def run_worker_in_thread(self, callback: Callable | None = None) -> None:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         self._thread_loop = loop

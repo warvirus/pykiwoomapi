@@ -2,7 +2,7 @@
 
 import logging
 from abc import abstractmethod
-from typing import Any, Dict, Optional
+from typing import Any
 
 import requests
 from requests.exceptions import ConnectionError as ReqConnectionError
@@ -19,6 +19,7 @@ def host_url(mock: bool) -> str:
 
     Returns:
         API base URL string.
+
     """
     return "https://mockapi.kiwoom.com" if mock else "https://api.kiwoom.com"
 
@@ -27,7 +28,7 @@ class WebIo:
     """Base HTTP client for Kiwoom API requests."""
 
     def __init__(self) -> None:
-        self.headers: Dict[str, str] = {
+        self.headers: dict[str, str] = {
             "Content-Type": "application/json;charset=UTF-8",
             "User-Agent": f"pykiwoomapi/{__version__}",
         }
@@ -45,6 +46,7 @@ class WebIo:
 
         Returns:
             Response object.
+
         """
         url = params.get("url", self.url)
         json_data = params.get("json")
@@ -61,14 +63,14 @@ class WebIo:
 
 def api_request(
     mock: bool,
-    token: Optional[str],
+    token: str | None,
     api_id: str,
     urn: str,
     cont_yn: str = "N",
     next_key: str = "",
     timeout: int = 30,
     **kwargs: Any,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Send a request to the Kiwoom API.
 
     Args:
@@ -83,6 +85,7 @@ def api_request(
 
     Returns:
         API response dictionary.
+
     """
     if not token:
         return {"return_code": -1, "return_msg": "No token provided. Please authenticate first."}
@@ -99,7 +102,7 @@ def api_request(
 
     data = kwargs.get("data", kwargs)
 
-    ret: Dict[str, Any] = {"return_code": -1, "return_msg": ""}
+    ret: dict[str, Any] = {"return_code": -1, "return_msg": ""}
 
     try:
         resp = requests.post(url, headers=headers, json=data, timeout=timeout)
