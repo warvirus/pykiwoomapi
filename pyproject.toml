@@ -32,16 +32,16 @@ requires-python = ">=3.9"
 dependencies = [
     "requests>=2.28.0",
     "websockets>=10.0",
-    "pandas>=1.5.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=7.0",
     "pytest-asyncio>=0.21",
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
     "mypy>=1.0",
+    "python-dotenv>=1.0",
 ]
 
 [project.urls]
@@ -62,12 +62,93 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 asyncio_mode = "auto"
 
-[tool.ruff]
-line-length = 120
-target-version = "py39"
-
 [tool.mypy]
 python_version = "3.9"
 src_path = ["src/pykiwoomapi"]
 warn_return_any = true
 ignore_missing_imports = true
+
+[tool.ruff]
+# 대상 Python 버전 - 설정하지 않으면 모든 파이썬 버전 대상으로 진행
+target-version = "py314"
+
+# 한 줄 최대 길이
+line-length = 1024
+indent-width = 4
+
+# 제외할 파일/디렉토리
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.lint]
+# 활성화할 규칙들
+select = [
+    # 기존 규칙 (기본적으로 포함)
+    "E",  # pycodestyle errors
+    "F",  # pyflakes errors
+    "B",  # bugbear warnings
+    "I",  # isort (import sorting)
+    "C",  # flake8-comprehensions
+    "D",  # pydocstyle
+    "N",  # flake8-naming
+    "W",  # pycodestyle warnings
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+    "TID",# flake8-tidy-imports
+    "ISC",# flake8-implicit-str-concat
+]
+
+# 무시할 규칙들
+# ignore = [
+#    "E501",  # line too long
+#    "B008",  # do not perform function calls in argument defaults
+#]
+
+# E501은 라인 길이 초과 규칙 (format이 처리함) / # D10X pydocstyle에서 특정 규칙 무시
+ignore = ["D100", "D101", "D102", "D103", "D104", "D205", "D107", "D200", "D203", "D213", "D400", "D415", "E501"]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+# 문자열 따옴표 스타일
+quote-style = "double"
+
+# 들여쓰기 스타일
+indent-style = "space"
+
+# 후행 쉼표 처리
+skip-magic-trailing-comma = false
+
+# 문자열 정규화
+# string-normalization = true
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = ["F401"]  # imported but unused
+"tests/**/*.py" = ["S101"]  # use of assert
